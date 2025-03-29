@@ -1,0 +1,62 @@
+<project default="compile">
+    <!-- Define a set of paths (file names) to pass to checkstyle - all .java files under `src` and its subdirectories (recursively)-->
+    <path id="sourceFiles">
+        <fileset dir="src" casesensitive="yes">
+            <include name="**/*.java"/>
+        </fileset>
+    </path>
+
+    <property name="src.dir" value="src"/>
+    <property name="bin.dir" value="bin"/>
+    <property name="lib.dir" value="lib"/>
+    <property name="style.dir" value="style"/>
+
+    <!-- Compile all java files under `src`, and export .class files into `bin` -->
+    <target name="compile">
+        <mkdir dir="${bin.dir}"/>
+        <javac srcdir="${src.dir}" destdir="${bin.dir}" includeantruntime="false">
+            <classpath>
+                <fileset dir="${lib.dir}">
+                    <include name="*.jar"/>
+                </fileset>
+            </classpath>
+        </javac>
+    </target>
+
+    <target name="clean">
+        <delete dir="bin"/>
+    </target>
+
+    <target name="run-gui-example" depends="compile">
+        <java classname="${src.dir}.main.CheckIntersections" fork="true">
+            <classpath>
+                <path location="${bin.dir}"/>
+                <fileset dir="${lib.dir}">
+                    <include name="*.jar"/>
+                </fileset>
+            </classpath>
+        </java>
+    </target>
+
+    <target name="run2" depends="compile">
+        <java classname="${src.dir}.main.AbstractArtDrawing" fork="true">
+            <classpath>
+                <path location="${bin.dir}"/>
+                <fileset dir="${lib.dir}">
+                    <include name="*.jar"/>
+                </fileset>
+            </classpath>
+        </java>
+    </target>
+
+    <!-- Run checkstyle on all our source files -->
+    <target name="check">
+        <java jar="${style.dir}/checkstyle-8.44-all.jar" fork="true">
+            <arg line="-c ${lib.dir}/biuoop.xml"/>
+            <arg line="${src.dir}/geometry/*.java"/>
+            <arg line="${src.dir}/main/*.java"/>
+            <arg line="${src.dir}/util/*.java"/>
+            <arg line="${src.dir}/*.java"/>
+        </java>
+    </target>
+</project>

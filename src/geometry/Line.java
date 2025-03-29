@@ -156,9 +156,9 @@ public class Line {
      * @param d The draw surface
      */
     public void draw(DrawSurface d) {
-        d.drawLine((int) this.start().getX(),
-                (int) this.start().getY(),
-                (int) this.end().getX(),
-                (int) this.end().getY());
+        d.drawLine((int) Math.round(this.start().getX()),
+                (int) Math.round(this.start().getY()),
+                (int) Math.round(this.end().getX()),
+                (int) Math.round(this.end().getY()));
     }
 }

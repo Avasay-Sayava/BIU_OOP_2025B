@@ -79,6 +79,6 @@ public class Point {
      * @param radius The radius of the point circle
      */
     public void draw(DrawSurface d, int radius) {
-        d.fillCircle((int) this.x, (int) this.y, radius);
+        d.fillCircle((int) Math.round(this.x), (int) Math.round(this.y), radius);
     }
 }

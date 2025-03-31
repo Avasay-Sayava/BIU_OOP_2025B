@@ -4,7 +4,8 @@ package src.util;
  * Utils for the Math subject.
  */
 public class MathUtils {
-    public static final double COMPARISON_THRESHOLD = 0.00001;
+    // in the Geometry check it was 1E-5, but in the assignment orders it was 1E-7 - so I chose randomly...
+    public static final double COMPARISON_THRESHOLD = 1E-5;
 
     /**
      * @param a The first number

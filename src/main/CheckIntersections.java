@@ -11,6 +11,11 @@ import java.awt.Color;
  * A class that checks for intersections between lines and draws them.
  */
 public class CheckIntersections {
+    private static final int WIDTH = 700;
+    private static final int HEIGHT = 500;
+    private static final int NUM_LINES = 36;
+    private static final int POINT_RADIUS = 3;
+
     /**
      * Draws the intersections of the lines on the given DrawSurface.
      *
@@ -22,7 +27,7 @@ public class CheckIntersections {
             for (int j = i + 1; j < lines.length; j++) {
                 Point intersection = lines[i].intersectionWith(lines[j]);
                 if (intersection != null) {
-                    intersection.draw(d, 3);
+                    intersection.draw(d, POINT_RADIUS);
                 }
             }
         }
@@ -34,9 +39,9 @@ public class CheckIntersections {
      * @param args Command line arguments
      */
     public static void main(String[] args) {
-        GUI gui = new GUI("CheckIntersections", 700, 700);
+        GUI gui = new GUI("CheckIntersections", WIDTH, HEIGHT);
         DrawSurface d = gui.getDrawSurface();
-        Line[] lines = new Line[36];
+        Line[] lines = new Line[NUM_LINES];
 
         lines[0] = new Line(100, 100, 200, 100);
         lines[1] = new Line(100, 100, 100, 200);

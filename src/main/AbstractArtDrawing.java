@@ -25,10 +25,10 @@ public class AbstractArtDrawing {
      * @return A random line
      */
     private Line randomLine() {
-        int x1 = this.rand.nextInt(WIDTH) + 1;
-        int y1 = this.rand.nextInt(HEIGHT) + 1;
-        int x2 = this.rand.nextInt(WIDTH) + 1;
-        int y2 = this.rand.nextInt(HEIGHT) + 1;
+        int x1 = this.rand.nextInt(WIDTH);
+        int y1 = this.rand.nextInt(HEIGHT);
+        int x2 = this.rand.nextInt(WIDTH);
+        int y2 = this.rand.nextInt(HEIGHT);
         return new Line(x1, y1, x2, y2);
     }
 
@@ -108,7 +108,7 @@ public class AbstractArtDrawing {
         Line[] lines = new Line[NUM_LINES];
 
         d.setColor(Color.BLACK);
-        for (int i = 0; i < NUM_LINES; ++i) {
+        for (int i = 0; i < lines.length; ++i) {
             lines[i] = randomLine();
             lines[i].draw(d);
         }

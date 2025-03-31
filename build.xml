@@ -8,7 +8,7 @@
 
     <property name="src.dir" value="src"/>
     <property name="bin.dir" value="bin"/>
-    <property name="lib.dir" value="lib"/>
+    <property name="lib.dir" value="./"/>
     <property name="style.dir" value="style"/>
 
     <!-- Compile all java files under `src`, and export .class files into `bin` -->
@@ -52,7 +52,7 @@
     <!-- Run checkstyle on all our source files -->
     <target name="check">
         <java jar="${style.dir}/checkstyle-8.44-all.jar" fork="true">
-            <arg line="-c ${lib.dir}/biuoop.xml"/>
+            <arg line="-c ${lib.dir}biuoop.xml"/>
             <arg line="${src.dir}/geometry/*.java"/>
             <arg line="${src.dir}/main/*.java"/>
             <arg line="${src.dir}/util/*.java"/>

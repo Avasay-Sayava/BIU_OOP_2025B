@@ -90,12 +90,20 @@ public class Line {
      * @return True if any of the lines intersect, false otherwise
      */
     public static boolean isIntersecting(Line... lines) {
+        // check if the lines are null or have less than 2 lines - therefore no intersection
+        if (lines == null || lines.length < 2) {
+            return false;
+        }
+
+        // check if the all the lines intersect with each other
         boolean intersecting = true;
         for (int i = 0; i < lines.length && intersecting; i++) {
             for (int j = i + 1; j < lines.length && intersecting; j++) {
+                // if false, the loop breaks
                 intersecting = lines[i].isIntersecting(lines[j]);
             }
         }
+
         return intersecting;
     }
 
@@ -104,12 +112,14 @@ public class Line {
      * @return The intersection point if the lines intersect, null otherwise
      */
     public Point intersectionWith(Line other) {
+        // if the lines do intersect
         if (isIntersecting(other)) {
             double dx1 = this.start().getX() - this.end().getX();
             double dy1 = this.start().getY() - this.end().getY();
             double dx2 = other.start().getX() - other.end().getX();
             double dy2 = other.start().getY() - other.end().getY();
 
+            // check if the lines are parallel. if not, calculate the intersection point
             if (!MathUtils.doubleEquals(dy1 * dx2, dy2 * dx1)) {
                 double d = dx1 * dy2 - dy1 * dx2;
                 double c1 = this.start().getX() * this.end().getY() - this.end().getX() * this.start().getY();
@@ -121,22 +131,37 @@ public class Line {
                 return new Point(x, y);
             }
 
-            if ((this.start().equals(other.start()) || this.end().equals(other.end()))
+            // if the lines are parallel, check if they have only one intersection point (the end or start)
+            // for start = start or end
+            if (this.start().equals(other.start())
                     && (MathUtils.sign(this.end().getX() - this.start().getX())
                     != MathUtils.sign(other.end().getX() - other.start().getX())
                     || MathUtils.sign(this.end().getY() - this.start().getY())
-                    != MathUtils.sign(other.end().getY() - other.start().getY()))) {
-                return this.start().equals(other.start()) ? this.start() : this.end();
+                    != MathUtils.sign(other.end().getY() - other.start().getY()))
+                    || this.start().equals(other.end())
+                    && (MathUtils.sign(this.end().getX() - this.start().getX())
+                    != MathUtils.sign(other.start().getX() - other.end().getX())
+                    || MathUtils.sign(this.end().getY() - this.start().getY())
+                    != MathUtils.sign(other.start().getY() - other.end().getY()))) {
+                return this.start();
             }
 
-            if ((this.start().equals(other.end()) || this.end().equals(other.start()))
-                    && (MathUtils.sign(this.end().getX() - this.start().getX())
-                    == MathUtils.sign(other.end().getX() - other.start().getX())
-                    || MathUtils.sign(this.end().getY() - this.start().getY())
-                    == MathUtils.sign(other.end().getY() - other.start().getY()))) {
-                return this.start().equals(other.end()) ? this.start() : this.end();
+            // for end = start or end
+            if (this.end().equals(other.start())
+                    && (MathUtils.sign(this.start().getX() - this.end().getX())
+                    != MathUtils.sign(other.end().getX() - other.start().getX())
+                    || MathUtils.sign(this.start().getY() - this.end().getY())
+                    != MathUtils.sign(other.end().getY() - other.start().getY()))
+                    || this.end().equals(other.end())
+                    && (MathUtils.sign(this.start().getX() - this.end().getX())
+                    != MathUtils.sign(other.start().getX() - other.end().getX())
+                    || MathUtils.sign(this.start().getY() - this.end().getY())
+                    != MathUtils.sign(other.start().getY() - other.end().getY()))) {
+                return this.end();
             }
         }
+
+        // if the lines do not intersect, return null
         return null;
     }
 

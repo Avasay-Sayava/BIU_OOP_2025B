@@ -1,9 +1,9 @@
-package src.main;
+package main;
 
 import biuoop.GUI;
 import biuoop.DrawSurface;
-import src.geometry.Line;
-import src.geometry.Point;
+import geometry.Line;
+import geometry.Point;
 
 import java.util.Random;
 import java.awt.Color;

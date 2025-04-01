@@ -1,9 +1,9 @@
-package src.main;
+package main;
 
 import biuoop.DrawSurface;
 import biuoop.GUI;
-import src.geometry.Line;
-import src.geometry.Point;
+import geometry.Line;
+import geometry.Point;
 
 import java.awt.Color;
 

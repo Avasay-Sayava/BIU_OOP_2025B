@@ -1,6 +1,6 @@
-package src.util;
+package util;
 
-import src.geometry.Point;
+import geometry.Point;
 
 /**
  * The utils for the Point class.

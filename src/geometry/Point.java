@@ -1,7 +1,7 @@
-package src.geometry;
+package geometry;
 
 import biuoop.DrawSurface;
-import src.util.MathUtils;
+import util.MathUtils;
 
 /**
  * A class that represents a point in 2D space.

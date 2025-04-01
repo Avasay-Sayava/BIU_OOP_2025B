@@ -6,57 +6,37 @@
         </fileset>
     </path>
 
-    <property name="src.dir" value="src"/>
-    <property name="bin.dir" value="bin"/>
-    <property name="lib.dir" value="./"/>
-    <property name="style.dir" value="style"/>
+    <!-- Define a property, which is like a variable for the build file, -->
+    <!--  with the classpath for all compilation & execution targets. -->
+    <property name="classpath" value="bin:biuoop-1.4.jar" />
 
     <!-- Compile all java files under `src`, and export .class files into `bin` -->
     <target name="compile">
-        <mkdir dir="${bin.dir}"/>
-        <javac srcdir="${src.dir}" destdir="${bin.dir}" includeantruntime="false">
-            <classpath>
-                <fileset dir="${lib.dir}">
-                    <include name="*.jar"/>
-                </fileset>
-            </classpath>
-        </javac>
+        <mkdir dir="bin"/>
+        <javac classpath="${classpath}" srcdir="src" destdir="bin" includeantruntime="false"/>
     </target>
 
     <target name="clean">
         <delete dir="bin"/>
     </target>
 
-    <target name="run-gui-example" depends="compile">
-        <java classname="${src.dir}.main.CheckIntersections" fork="true">
-            <classpath>
-                <path location="${bin.dir}"/>
-                <fileset dir="${lib.dir}">
-                    <include name="*.jar"/>
-                </fileset>
-            </classpath>
-        </java>
+    <!--    This target is for your convenience; we will not grade it. -->
+    <target name="run-gui-example" depends="compile" >
+        <java classname="main.CheckIntersections" classpath="${classpath}" fork="true"/>
     </target>
 
-    <target name="run2" depends="compile">
-        <java classname="${src.dir}.main.AbstractArtDrawing" fork="true">
-            <classpath>
-                <path location="${bin.dir}"/>
-                <fileset dir="${lib.dir}">
-                    <include name="*.jar"/>
-                </fileset>
-            </classpath>
-        </java>
+    <target name="run2" depends="compile" >
+        <java classname="main.AbstractArtDrawing" classpath="${classpath}" fork="true"/>
     </target>
 
     <!-- Run checkstyle on all our source files -->
     <target name="check">
-        <java jar="${style.dir}/checkstyle-8.44-all.jar" fork="true">
-            <arg line="-c ${lib.dir}biuoop.xml"/>
-            <arg line="${src.dir}/geometry/*.java"/>
-            <arg line="${src.dir}/main/*.java"/>
-            <arg line="${src.dir}/util/*.java"/>
-            <arg line="${src.dir}/*.java"/>
+        <java jar="checkstyle-8.44-all.jar" fork="true">
+            <arg line="-c biuoop.xml" />
+            <arg line="src/geometry/*.java" />
+            <arg line="src/main/*.java" />
+            <arg line="src/util/*.java" />
         </java>
     </target>
+
 </project>

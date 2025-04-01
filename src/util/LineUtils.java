@@ -1,6 +1,6 @@
-package src.util;
+package util;
 
-import src.geometry.Line;
+import geometry.Line;
 
 /**
  * The utils for the Line class.

@@ -1,8 +1,8 @@
-package src.geometry;
+package geometry;
 
 import biuoop.DrawSurface;
-import src.util.LineUtils;
-import src.util.MathUtils;
+import util.LineUtils;
+import util.MathUtils;
 
 /**
  * A class that represents a line in 2D space.

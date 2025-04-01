@@ -1,4 +1,4 @@
-package src.util;
+package util;
 
 /**
  * Utils for the Math subject.

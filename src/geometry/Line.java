@@ -86,22 +86,26 @@ public class Line {
     }
 
     /**
-     * @param lines The lines to check intersection with
-     * @return True if any of the lines intersect, false otherwise
+     * @param other1 the first line to check intersection with
+     * @param other2 the second line to check intersection with
+     * @return True if the lines intersect, false otherwise
      */
-    public static boolean isIntersecting(Line... lines) {
-        // check if the lines are null or have less than 2 lines - therefore no intersection
-        if (lines == null || lines.length < 2) {
+    public boolean isIntersecting(Line other1, Line other2) {
+        return isIntersecting(other1) && isIntersecting(other2);
+    }
+
+    /**
+     * @param lines The lines to check intersection with
+     * @return True if the all lines intersect with this line, false otherwise
+     */
+    public boolean isIntersecting(Line... lines) {
+        if (lines == null || lines.length < 1) {
             return false;
         }
 
-        // check if the all the lines intersect with each other
         boolean intersecting = true;
         for (int i = 0; i < lines.length && intersecting; i++) {
-            for (int j = i + 1; j < lines.length && intersecting; j++) {
-                // if false, the loop breaks
-                intersecting = lines[i].isIntersecting(lines[j]);
-            }
+            intersecting = isIntersecting(lines[i]);
         }
 
         return intersecting;

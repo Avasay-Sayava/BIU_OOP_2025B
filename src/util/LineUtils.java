@@ -20,4 +20,23 @@ public class LineUtils {
                 || PointUtils.isClockwiseOrCollinear(first.start(), first.end(), second.start())
                 != PointUtils.isClockwise(first.start(), first.end(), second.end());
     }
+
+    /**
+     * @param lines The lines to check intersection with
+     * @return True if any of the lines intersect, false otherwise
+     */
+    public static boolean areIntersecting(Line... lines) {
+        // check if the lines are null or have less than 2 lines - therefore no intersection
+        if (lines == null || lines.length < 2) {
+            return false;
+        }
+
+        // check if the all the lines intersect with each other
+        boolean intersecting = true;
+        for (int i = 0; i < lines.length && intersecting; i++) {
+            intersecting = lines[i].isIntersecting(lines);
+        }
+
+        return intersecting;
+    }
 }

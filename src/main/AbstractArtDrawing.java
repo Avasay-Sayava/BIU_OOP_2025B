@@ -1,9 +1,17 @@
+/*
+ID: 326552304
+Name: Aviv Sayer
+Assignment: ass1
+ */
+
+
 package main;
 
 import biuoop.GUI;
 import biuoop.DrawSurface;
 import geometry.Line;
 import geometry.Point;
+import util.LineUtils;
 
 import java.util.Random;
 import java.awt.Color;
@@ -42,7 +50,7 @@ public class AbstractArtDrawing {
         for (int i = 0; i < lines.length; i++) {
             for (int j = i + 1; j < lines.length; j++) {
                 for (int k = j + 1; k < lines.length; k++) {
-                    if (Line.isIntersecting(lines[i], lines[j], lines[k])) {
+                    if (LineUtils.areIntersecting(lines[i], lines[j], lines[k])) {
                         drawTriangle(lines[i].intersectionWith(lines[j]),
                                 lines[i].intersectionWith(lines[k]),
                                 lines[j].intersectionWith(lines[k]),

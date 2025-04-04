@@ -8,8 +8,8 @@ import util.MathUtils;
  */
 public class Point {
     // The point's coordinates
-    private final double x;
-    private final double y;
+    private double x;
+    private double y;
 
     /**
      * Copy constructor.
@@ -17,7 +17,7 @@ public class Point {
      * @param other The point to copy
      */
     public Point(Point other) {
-        this(other.x, other.y);
+        this(other.getX(), other.getY());
     }
 
     /**
@@ -38,8 +38,8 @@ public class Point {
      * @return The distance between the two points
      */
     public double distance(Point other) {
-        return Math.sqrt((this.x - other.x) * (this.x - other.x)
-                + (this.y - other.y) * (this.y - other.y));
+        return Math.sqrt((this.getX() - other.getX()) * (this.getX() - other.getX())
+                + (this.getY() - other.getY()) * (this.getY() - other.getY()));
     }
 
     /**
@@ -50,8 +50,8 @@ public class Point {
      */
     public boolean equals(Point other) {
         return other != null
-                && MathUtils.doubleEquals(this.x, other.x)
-                && MathUtils.doubleEquals(this.y, other.y);
+                && MathUtils.doubleEquals(this.getX(), other.getX())
+                && MathUtils.doubleEquals(this.getY(), other.getY());
     }
 
     /**
@@ -73,12 +73,30 @@ public class Point {
     }
 
     /**
+     * Set the x coordinate of the point.
+     *
+     * @param x The new x coordinate
+     */
+    public void setX(double x) {
+        this.x = x;
+    }
+
+    /**
+     * Set the y coordinate of the point.
+     *
+     * @param y The new y coordinate
+     */
+    public void setY(double y) {
+        this.y = y;
+    }
+
+    /**
      * Draw the point on the given surface.
      *
      * @param d      The surface to draw on
      * @param radius The radius of the point circle
      */
     public void draw(DrawSurface d, int radius) {
-        d.fillCircle((int) Math.round(this.x), (int) Math.round(this.y), radius);
+        d.fillCircle((int) Math.round(this.getX()), (int) Math.round(this.getX()), radius);
     }
 }

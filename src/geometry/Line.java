@@ -9,10 +9,8 @@ import util.MathUtils;
  */
 public class Line {
     // The line's coordinates
-    private final double x1;
-    private final double y1;
-    private final double x2;
-    private final double y2;
+    private final Point start;
+    private final Point end;
 
     /**
      * Copy constructor.
@@ -42,10 +40,8 @@ public class Line {
      * @param y2 The y coordinate of the end point
      */
     public Line(double x1, double y1, double x2, double y2) {
-        this.x1 = x1;
-        this.y1 = y1;
-        this.x2 = x2;
-        this.y2 = y2;
+        this.start = new Point(x1, y1);
+        this.end = new Point(x2, y2);
     }
 
     /**
@@ -67,14 +63,14 @@ public class Line {
      * @return The start point of the line
      */
     public Point start() {
-        return new Point(this.x1, this.y1);
+        return new Point(this.start);
     }
 
     /**
      * @return The end point of the line
      */
     public Point end() {
-        return new Point(this.x2, this.y2);
+        return new Point(this.end);
     }
 
     /**

@@ -3,22 +3,19 @@ package geometry;
 import biuoop.DrawSurface;
 import util.LineUtils;
 import util.MathUtils;
+import util.Pair;
 
 /**
  * A class that represents a line in 2D space.
  */
-public class Line {
-    // The line's coordinates
-    private final Point start;
-    private final Point end;
-
+public class Line extends Pair<Point, Point> {
     /**
      * Copy constructor.
      *
      * @param other The line to copy
      */
     public Line(Line other) {
-        this(other.start(), other.end());
+        this(other.getStart(), other.getEnd());
     }
 
     /**
@@ -40,37 +37,36 @@ public class Line {
      * @param y2 The y coordinate of the end point
      */
     public Line(double x1, double y1, double x2, double y2) {
-        this.start = new Point(x1, y1);
-        this.end = new Point(x2, y2);
+        super(new Point(x1, y1), new Point(x2, y2));
     }
 
     /**
      * @return The length of the line
      */
     public double length() {
-        return this.start().distance(this.end());
+        return getStart().distance(getEnd());
     }
 
     /**
      * @return The middle point of the line
      */
     public Point middle() {
-        return new Point((this.start().getX() + this.end().getX()) / 2,
-                (this.start().getY() + this.end().getY()) / 2);
+        return new Point((getStart().getX() + getEnd().getX()) / 2,
+                (getStart().getY() + getEnd().getY()) / 2);
     }
 
     /**
      * @return The start point of the line
      */
-    public Point start() {
-        return new Point(this.start);
+    public Point getStart() {
+        return new Point(getFirst());
     }
 
     /**
      * @return The end point of the line
      */
-    public Point end() {
-        return new Point(this.end);
+    public Point getEnd() {
+        return new Point(getSecond());
     }
 
     /**
@@ -114,16 +110,16 @@ public class Line {
     public Point intersectionWith(Line other) {
         // if the lines do intersect
         if (isIntersecting(other)) {
-            double dx1 = this.start().getX() - this.end().getX();
-            double dy1 = this.start().getY() - this.end().getY();
-            double dx2 = other.start().getX() - other.end().getX();
-            double dy2 = other.start().getY() - other.end().getY();
+            double dx1 = getStart().getX() - getEnd().getX();
+            double dy1 = getStart().getY() - getEnd().getY();
+            double dx2 = other.getStart().getX() - other.getEnd().getX();
+            double dy2 = other.getStart().getY() - other.getEnd().getY();
 
             // check if the lines are parallel. if not, calculate the intersection point
             if (!MathUtils.doubleEquals(dy1 * dx2, dy2 * dx1)) {
                 double d = dx1 * dy2 - dy1 * dx2;
-                double c1 = this.start().getX() * this.end().getY() - this.end().getX() * this.start().getY();
-                double c2 = other.start().getX() * other.end().getY() - other.end().getX() * other.start().getY();
+                double c1 = getStart().getX() * getEnd().getY() - getEnd().getX() * getStart().getY();
+                double c2 = other.getStart().getX() * other.getEnd().getY() - other.getEnd().getX() * other.getStart().getY();
 
                 double x = (c1 * dx2 - c2 * dx1) / d;
                 double y = (c1 * dy2 - c2 * dy1) / d;
@@ -133,31 +129,31 @@ public class Line {
 
             // if the lines are parallel, check if they have only one intersection point (the end or start)
             // for start = start or end
-            if (this.start().equals(other.start())
-                    && (MathUtils.sign(this.end().getX() - this.start().getX())
-                    != MathUtils.sign(other.end().getX() - other.start().getX())
-                    || MathUtils.sign(this.end().getY() - this.start().getY())
-                    != MathUtils.sign(other.end().getY() - other.start().getY()))
-                    || this.start().equals(other.end())
-                    && (MathUtils.sign(this.end().getX() - this.start().getX())
-                    != MathUtils.sign(other.start().getX() - other.end().getX())
-                    || MathUtils.sign(this.end().getY() - this.start().getY())
-                    != MathUtils.sign(other.start().getY() - other.end().getY()))) {
-                return this.start();
+            if (getStart().equals(other.getStart())
+                    && (MathUtils.sign(getEnd().getX() - getStart().getX())
+                    != MathUtils.sign(other.getEnd().getX() - other.getStart().getX())
+                    || MathUtils.sign(getEnd().getY() - getStart().getY())
+                    != MathUtils.sign(other.getEnd().getY() - other.getStart().getY()))
+                    || getStart().equals(other.getEnd())
+                    && (MathUtils.sign(getEnd().getX() - getStart().getX())
+                    != MathUtils.sign(other.getStart().getX() - other.getEnd().getX())
+                    || MathUtils.sign(getEnd().getY() - getStart().getY())
+                    != MathUtils.sign(other.getStart().getY() - other.getEnd().getY()))) {
+                return getStart();
             }
 
             // for end = start or end
-            if (this.end().equals(other.start())
-                    && (MathUtils.sign(this.start().getX() - this.end().getX())
-                    != MathUtils.sign(other.end().getX() - other.start().getX())
-                    || MathUtils.sign(this.start().getY() - this.end().getY())
-                    != MathUtils.sign(other.end().getY() - other.start().getY()))
-                    || this.end().equals(other.end())
-                    && (MathUtils.sign(this.start().getX() - this.end().getX())
-                    != MathUtils.sign(other.start().getX() - other.end().getX())
-                    || MathUtils.sign(this.start().getY() - this.end().getY())
-                    != MathUtils.sign(other.start().getY() - other.end().getY()))) {
-                return this.end();
+            if (getEnd().equals(other.getStart())
+                    && (MathUtils.sign(getStart().getX() - getEnd().getX())
+                    != MathUtils.sign(other.getEnd().getX() - other.getStart().getX())
+                    || MathUtils.sign(getStart().getY() - getEnd().getY())
+                    != MathUtils.sign(other.getEnd().getY() - other.getStart().getY()))
+                    || getEnd().equals(other.getEnd())
+                    && (MathUtils.sign(getStart().getX() - getEnd().getX())
+                    != MathUtils.sign(other.getStart().getX() - other.getEnd().getX())
+                    || MathUtils.sign(getStart().getY() - getEnd().getY())
+                    != MathUtils.sign(other.getStart().getY() - other.getEnd().getY()))) {
+                return getEnd();
             }
         }
 
@@ -171,8 +167,15 @@ public class Line {
      */
     public boolean equals(Line other) {
         return other != null
-                && (this.start().equals(other.start()) && this.end().equals(other.end())
-                || this.start().equals(other.end()) && this.end().equals(other.start()));
+                && (getStart().equals(other.getStart()) && getEnd().equals(other.getEnd())
+                || getStart().equals(other.getEnd()) && getEnd().equals(other.getStart()));
+    }
+
+    public double distance(Point point) {
+        double dx = getEnd().getX() - getStart().getX();
+        double dy = getEnd().getY() - getStart().getY();
+        double c = getStart().getX() * getEnd().getY() - getEnd().getX() * getStart().getY();
+        return Math.abs(dy * point.getX() - dx * point.getY() - c) / length();
     }
 
     /**
@@ -180,10 +183,10 @@ public class Line {
      *
      * @param d The draw surface
      */
-    public void draw(DrawSurface d) {
-        d.drawLine((int) Math.round(this.start().getX()),
-                (int) Math.round(this.start().getY()),
-                (int) Math.round(this.end().getX()),
-                (int) Math.round(this.end().getY()));
+    public void drawOn(DrawSurface d) {
+        d.drawLine((int) Math.round(getStart().getX()),
+                (int) Math.round(getStart().getY()),
+                (int) Math.round(getEnd().getX()),
+                (int) Math.round(getEnd().getY()));
     }
 }

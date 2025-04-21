@@ -2,14 +2,12 @@ package geometry;
 
 import biuoop.DrawSurface;
 import util.MathUtils;
+import util.Pair;
 
 /**
  * A class that represents a point in 2D space.
  */
-public class Point {
-    // The point's coordinates
-    private double x;
-    private double y;
+public class Point extends Pair<Double, Double> {
 
     /**
      * Copy constructor.
@@ -27,8 +25,7 @@ public class Point {
      * @param y The y coordinate
      */
     public Point(double x, double y) {
-        this.x = x;
-        this.y = y;
+        super(x, y);
     }
 
     /**
@@ -60,7 +57,7 @@ public class Point {
      * @return The x coordinate
      */
     public double getX() {
-        return this.x;
+        return getFirst();
     }
 
     /**
@@ -69,25 +66,25 @@ public class Point {
      * @return The y coordinate
      */
     public double getY() {
-        return this.y;
+        return getSecond();
     }
 
     /**
      * Set the x coordinate of the point.
      *
-     * @param x The new x coordinate
+     * @param x The x coordinate
      */
     public void setX(double x) {
-        this.x = x;
+        setFirst(x);
     }
 
     /**
      * Set the y coordinate of the point.
      *
-     * @param y The new y coordinate
+     * @param y The y coordinate
      */
     public void setY(double y) {
-        this.y = y;
+        setSecond(y);
     }
 
     /**
@@ -96,7 +93,7 @@ public class Point {
      * @param d      The surface to draw on
      * @param radius The radius of the point circle
      */
-    public void draw(DrawSurface d, int radius) {
+    public void drawOn(DrawSurface d, int radius) {
         d.fillCircle((int) Math.round(this.getX()), (int) Math.round(this.getX()), radius);
     }
 }

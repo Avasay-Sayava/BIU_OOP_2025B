@@ -15,10 +15,10 @@ public class LineUtils {
      * @return If the lines semi-intersect
      */
     public static boolean wcc(Line first, Line second) {
-        return PointUtils.isClockwise(first.start(), first.end(), second.start())
-                != PointUtils.isClockwiseOrCollinear(first.start(), first.end(), second.end())
-                || PointUtils.isClockwiseOrCollinear(first.start(), first.end(), second.start())
-                != PointUtils.isClockwise(first.start(), first.end(), second.end());
+        return PointUtils.isClockwise(first.getStart(), first.getEnd(), second.getStart())
+                != PointUtils.isClockwiseOrCollinear(first.getStart(), first.getEnd(), second.getEnd())
+                || PointUtils.isClockwiseOrCollinear(first.getStart(), first.getEnd(), second.getStart())
+                != PointUtils.isClockwise(first.getStart(), first.getEnd(), second.getEnd());
     }
 
     /**
@@ -38,5 +38,19 @@ public class LineUtils {
         }
 
         return intersecting;
+    }
+
+    /**
+     * Calculates the angle between two lines.
+     *
+     * @param line1 the first line
+     * @param line2 the second line
+     * @return the angle between the two lines in radians
+     */
+    public static double angleBetween(Line line1, Line line2) {
+        double angle1 = line1.getAngle() % (2 * Math.PI);
+        double angle2 = line2.getAngle() % (2 * Math.PI);
+        double angle = Math.abs(angle1 - angle2) % (2 * Math.PI);
+        return Math.min(angle, 2 * Math.PI - angle);
     }
 }

@@ -1,13 +1,26 @@
 package geometry;
 
 import biuoop.DrawSurface;
+import graphics.Drawable;
+import graphics.Movable;
 import util.MathUtils;
 import util.Pair;
+import util.PointUtils;
 
 /**
  * A class that represents a point in 2D space.
  */
-public class Point extends Pair<Double, Double> {
+public class Point extends Pair<Double, Double> implements Drawable, Movable {
+    /**
+     * Create a point from an angle and speed.
+     *
+     * @param angle the angle in radians
+     * @param speed the speed
+     * @return a point with the given angle and speed
+     */
+    public static Point fromAngleAndSpeed(double angle, double speed) {
+        return new Point(Math.cos(angle) * speed, Math.sin(angle) * speed);
+    }
 
     /**
      * Copy constructor.
@@ -90,10 +103,127 @@ public class Point extends Pair<Double, Double> {
     /**
      * Draw the point on the given surface.
      *
-     * @param d      The surface to draw on
-     * @param radius The radius of the point circle
+     * @param d The surface to draw on
      */
-    public void drawOn(DrawSurface d, int radius) {
-        d.fillCircle((int) Math.round(this.getX()), (int) Math.round(this.getX()), radius);
+    @Override
+    public void drawOn(DrawSurface d) {
+        d.fillCircle((int) Math.round(this.getX()), (int) Math.round(this.getY()), PointUtils.POINT_RADIUS);
+    }
+
+    /**
+     * Move the object to the given point.
+     *
+     * @param p the new point of the object
+     */
+    @Override
+    public void move(Point p) {
+        move(p.getX(), p.getY());
+    }
+
+    /**
+     * Move the object to the given point.
+     *
+     * @param x the x coordinate of the new point
+     * @param y the y coordinate of the new point
+     */
+    @Override
+    public void move(double x, double y) {
+        setX(x);
+        setY(y);
+    }
+
+    /**
+     * Move the object by the given point.
+     *
+     * @param dp the point to move by
+     */
+    @Override
+    public void transform(Point dp) {
+        transform(dp.getX(), dp.getY());
+    }
+
+    /**
+     * Move the object by the given delta.
+     *
+     * @param dx the delta x
+     * @param dy the delta y
+     */
+    @Override
+    public void transform(double dx, double dy) {
+        move(getX() + dx, getY() + dy);
+    }
+
+    /**
+     * Multiply the point by a scalar.
+     *
+     * @param scalar the scalar to multiply by
+     * @return the point after multiplication
+     */
+    public Point multiply(double scalar) {
+        move(getX() * scalar, getY() * scalar);
+        return this;
+    }
+
+    /**
+     * Calculate the dot product of this point and another point.
+     *
+     * @param other the other point
+     * @return the dot product
+     */
+    public double dot(Point other) {
+        return getX() * other.getX() + getY() * other.getY();
+    }
+
+    /**
+     * Add another point to this point.
+     *
+     * @param other the other point
+     * @return this point after addition
+     */
+    public Point add(Point other) {
+        transform(other);
+        return this;
+    }
+
+    /**
+     * Subtract another point from this point.
+     *
+     * @param other the other point
+     * @return this point after subtraction
+     */
+    public Point subtract(Point other) {
+        add(other.copy().multiply(-1));
+        return this;
+    }
+
+    /**
+     * Calculate the normal of this point.
+     *
+     * @return the normal of this point
+     */
+    public double normal() {
+        return Math.sqrt(getX() * getX() + getY() * getY());
+    }
+
+    /**
+     * Normalize this point.
+     *
+     * @return the normalized point
+     */
+    public Point normalize() {
+        double length = normal();
+        if (length == 0) {
+            return this;
+        }
+        return multiply(1 / length);
+    }
+
+    /**
+     * Create a clone of the point.
+     *
+     * @return a new point with the same coordinates
+     */
+    public Point copy() {
+        return new Point(this);
     }
 }

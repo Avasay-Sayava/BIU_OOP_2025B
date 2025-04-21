@@ -1,6 +1,7 @@
 package geometry;
 
 import biuoop.DrawSurface;
+import graphics.Drawable;
 import util.LineUtils;
 import util.MathUtils;
 import util.Pair;
@@ -8,7 +9,7 @@ import util.Pair;
 /**
  * A class that represents a line in 2D space.
  */
-public class Line extends Pair<Point, Point> {
+public class Line extends Pair<Point, Point> implements Drawable {
     /**
      * Copy constructor.
      *
@@ -119,7 +120,8 @@ public class Line extends Pair<Point, Point> {
             if (!MathUtils.doubleEquals(dy1 * dx2, dy2 * dx1)) {
                 double d = dx1 * dy2 - dy1 * dx2;
                 double c1 = getStart().getX() * getEnd().getY() - getEnd().getX() * getStart().getY();
-                double c2 = other.getStart().getX() * other.getEnd().getY() - other.getEnd().getX() * other.getStart().getY();
+                double c2 = other.getStart().getX() * other.getEnd().getY()
+                        - other.getEnd().getX() * other.getStart().getY();
 
                 double x = (c1 * dx2 - c2 * dx1) / d;
                 double y = (c1 * dy2 - c2 * dy1) / d;
@@ -171,6 +173,10 @@ public class Line extends Pair<Point, Point> {
                 || getStart().equals(other.getEnd()) && getEnd().equals(other.getStart()));
     }
 
+    /**
+     * @param point The point to check
+     * @return The distance from the line to the point
+     */
     public double distance(Point point) {
         double dx = getEnd().getX() - getStart().getX();
         double dy = getEnd().getY() - getStart().getY();
@@ -188,5 +194,13 @@ public class Line extends Pair<Point, Point> {
                 (int) Math.round(getStart().getY()),
                 (int) Math.round(getEnd().getX()),
                 (int) Math.round(getEnd().getY()));
+    }
+
+    /**
+     * @return The angle of the line in radians
+     */
+    public double getAngle() {
+        return Math.atan2(getEnd().getY() - getStart().getY(),
+                getEnd().getX() - getStart().getX());
     }
 }

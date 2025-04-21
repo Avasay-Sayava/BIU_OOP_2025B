@@ -6,6 +6,7 @@ import geometry.Point;
  * The utils for the Point class.
  */
 public class PointUtils {
+    public static final int POINT_RADIUS = 3;
 
     /**
      * @param p1 The first point

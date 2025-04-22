@@ -203,12 +203,28 @@ public class Ball extends Point implements Colored, PhysicalShape {
      */
     @Override
     public boolean isIntersecting(Line line) {
+        return intersectionType(line) != IntersectionType.NO_INTERSECTION;
+    }
+
+    /**
+     * Calculates if the ball intersects with the line and returns accordingly.
+     *
+     * @param line the line to intersect with
+     * @return ON_TOP if the ball intersects the line segment itself,
+     * ON_VERTEX if the ball intersects one of the vertexes, and
+     * NO_INTERSECTION if the ball doesn't intersect the line.
+     */
+    public IntersectionType intersectionType(Line line) {
         double startAngle = LineUtils.angleBetween(line, new Line(line.getStart(), this));
         double endAngle = LineUtils.angleBetween(line, new Line(this, line.getEnd()));
-        return startAngle < Math.PI / 2 && endAngle < Math.PI / 2
-                ? line.distance(this.getCenter()) <= this.getRadius()
-                : Math.min(line.getStart().distance(this),
-                line.getEnd().distance(this)) <= this.getRadius();
+        if (startAngle < Math.PI / 2 && endAngle < Math.PI / 2) {
+            return line.distance(this.getCenter()) <= this.getRadius() ? IntersectionType.ON_TOP :
+                    IntersectionType.NO_INTERSECTION;
+        } else {
+            return Math.min(line.getStart().distance(this),
+                    line.getEnd().distance(this)) <= this.getRadius() ? IntersectionType.ON_VERTEX :
+                    IntersectionType.NO_INTERSECTION;
+        }
     }
 
     /**
@@ -263,5 +279,9 @@ public class Ball extends Point implements Colored, PhysicalShape {
     @Override
     public BallCollider getCollider() {
         return this.collider;
+    }
+
+    public enum IntersectionType {
+        NO_INTERSECTION, ON_TOP, ON_VERTEX
     }
 }

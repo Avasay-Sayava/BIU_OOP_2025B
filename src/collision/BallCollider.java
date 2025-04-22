@@ -49,6 +49,11 @@ public class BallCollider extends Collider<Ball> {
         this.lines.add(line);
     }
 
+    /**
+     * Changes this.changed according to the given line.
+     *
+     * @param line the line to collide with
+     */
     private void calculateCollision(Line line) {
         double normalAngle = line.getAngle() + Math.PI / 2;
         Point normal = Point.fromAngleAndSpeed(normalAngle, 1);
@@ -66,8 +71,19 @@ public class BallCollider extends Collider<Ball> {
      */
     @Override
     public void apply() {
-        this.lines.stream().max((line1, line2) -> Double.compare(line1.distance(this.getShape()),
-                line2.distance(this.getShape()))).ifPresent(this::calculateCollision);
+        boolean onTopIntersection = false;
+        for (Line line : this.lines) {
+            if (this.getShape().intersectionType(line) == Ball.IntersectionType.ON_TOP) {
+                onTopIntersection = true;
+                this.lines.stream().filter(l -> this.getShape().intersectionType(l)
+                        == Ball.IntersectionType.ON_TOP).forEach(this::calculateCollision);
+            }
+        }
+        if (!onTopIntersection) {
+            for (Line line : this.lines) {
+                calculateCollision(line);
+            }
+        }
         this.lines.clear();
         super.apply();
     }

@@ -8,6 +8,7 @@ import physics.Velocity;
 import util.Constants;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This class represents a collider for a ball.
@@ -59,7 +60,7 @@ public class BallCollider extends Collider<Ball> {
         Point normal = Point.fromAngleAndSpeed(normalAngle, 1);
         Velocity velocity = this.getShape().getVelocity();
         Point velocityProj = normal.copy().multiply(normal.dot(velocity));
-        Point center = this.getShape().getCenter().subtract(line.getStart());
+        Point center = this.getShape().getLastCenter().subtract(line.getStart());
         Point centerProj = normal.copy().multiply(normal.dot(center)).normalize();
         Point newVelocity = centerProj.copy()
                 .multiply(Constants.ELASTICITY_FACTOR * velocityProj.normal()).subtract(velocityProj);
@@ -71,18 +72,15 @@ public class BallCollider extends Collider<Ball> {
      */
     @Override
     public void apply() {
-        boolean onTopIntersection = false;
-        for (Line line : this.lines) {
-            if (this.getShape().intersectionType(line) == Ball.IntersectionType.ON_TOP) {
-                onTopIntersection = true;
-                this.lines.stream().filter(l -> this.getShape().intersectionType(l)
-                        == Ball.IntersectionType.ON_TOP).forEach(this::calculateCollision);
-            }
+        List<Line> list = this.lines.stream()
+                .filter(l -> this.getShape().intersectionType(l) != Ball.IntersectionType.ON_VERTEX).toList();
+        if (list.isEmpty()) {
+            this.lines.forEach(this::calculateCollision);
+        } else {
+            list.forEach(this::calculateCollision);
         }
-        if (!onTopIntersection) {
-            for (Line line : this.lines) {
-                calculateCollision(line);
-            }
+        if (this.lines.isEmpty()) {
+            this.getShape().updateLastCenter();
         }
         this.lines.clear();
         super.apply();

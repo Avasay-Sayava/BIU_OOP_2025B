@@ -106,11 +106,31 @@ public class Rectangle extends Polygon implements Drawable {
 
     /**
      * @param point the point to check
+     * @return true if the rectangle contains the point, false otherwise
+     */
+    public boolean contains(Ball point) {
+        return point.getX() > topLeft().getX() && point.getX() < topLeft().getX() + getWidth()
+                && point.getY() > topLeft().getY() && point.getY() < topLeft().getY() + getHeight()
+                && point.isIntersecting(this) == null;
+    }
+
+    /**
+     * @param point the point to check
      * @return true if the rectangle does not contain the point, false otherwise
      */
     @Override
     public boolean doesntContain(Point point) {
-        return point.getX() < topLeft().getX() && point.getX() > topLeft().getX() + getWidth()
-                && point.getY() < topLeft().getY() && point.getY() > topLeft().getY() + getHeight();
+        return point.getX() < topLeft().getX() || point.getX() > topLeft().getX() + getWidth()
+                || point.getY() < topLeft().getY() || point.getY() > topLeft().getY() + getHeight();
+    }
+
+    /**
+     * @param point the point to check
+     * @return true if the rectangle does not contain the point, false otherwise
+     */
+    public boolean doesntContain(Ball point) {
+        return (point.getX() < topLeft().getX() || point.getX() > topLeft().getX() + getWidth()
+                || point.getY() < topLeft().getY() || point.getY() > topLeft().getY() + getHeight())
+                && point.isIntersecting(this) == null;
     }
 }

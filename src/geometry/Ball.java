@@ -19,6 +19,7 @@ public class Ball extends Point implements Colored, PhysicalShape {
     private Color color;
     private final Velocity velocity;
     private double area;
+    private Point lastCenter;
     private final BallCollider collider;
 
     /**
@@ -56,6 +57,7 @@ public class Ball extends Point implements Colored, PhysicalShape {
         this.velocity = new Velocity(0, 0);
         this.area = -1;
         this.collider = new BallCollider(this);
+        this.lastCenter = this.copy();
     }
 
     /**
@@ -143,6 +145,13 @@ public class Ball extends Point implements Colored, PhysicalShape {
     }
 
     /**
+     * @return The last center of the ball
+     */
+    public Point getLastCenter() {
+        return new Point(this.lastCenter);
+    }
+
+    /**
      * @return The area of the ball
      */
     @Override
@@ -184,7 +193,7 @@ public class Ball extends Point implements Colored, PhysicalShape {
 
     /**
      * @param line the line to check for intersection
-     * @return true if the ball intersects with the line, false otherwise
+     * @return the intersecting line if the ball intersects with the line, null otherwise
      */
     @Override
     public Line isIntersecting(Polygon line) {
@@ -215,15 +224,18 @@ public class Ball extends Point implements Colored, PhysicalShape {
      * NO_INTERSECTION if the ball doesn't intersect the line.
      */
     public IntersectionType intersectionType(Line line) {
+        if (new Line(this, this.lastCenter).isIntersecting(line)) {
+            return IntersectionType.MOVEMENT_INTERSECTION;
+        }
         double startAngle = LineUtils.angleBetween(line, new Line(line.getStart(), this));
         double endAngle = LineUtils.angleBetween(line, new Line(this, line.getEnd()));
         if (startAngle < Math.PI / 2 && endAngle < Math.PI / 2) {
-            return line.distance(this.getCenter()) <= this.getRadius() ? IntersectionType.ON_TOP :
-                    IntersectionType.NO_INTERSECTION;
+            return line.distance(this.getCenter()) <= this.getRadius() ? IntersectionType.ON_TOP
+                    : IntersectionType.NO_INTERSECTION;
         } else {
             return Math.min(line.getStart().distance(this),
-                    line.getEnd().distance(this)) <= this.getRadius() ? IntersectionType.ON_VERTEX :
-                    IntersectionType.NO_INTERSECTION;
+                    line.getEnd().distance(this)) <= this.getRadius() ? IntersectionType.ON_VERTEX
+                    : IntersectionType.NO_INTERSECTION;
         }
     }
 
@@ -281,7 +293,17 @@ public class Ball extends Point implements Colored, PhysicalShape {
         return this.collider;
     }
 
+    /**
+     * Updates the last center of the ball.
+     */
+    public void updateLastCenter() {
+        this.lastCenter.move(this);
+    }
+
+    /**
+     * The type of intersection between a ball and a line.
+     */
     public enum IntersectionType {
-        NO_INTERSECTION, ON_TOP, ON_VERTEX
+        NO_INTERSECTION, ON_TOP, MOVEMENT_INTERSECTION, ON_VERTEX
     }
 }

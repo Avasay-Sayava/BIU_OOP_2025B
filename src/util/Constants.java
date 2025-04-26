@@ -10,5 +10,5 @@ public class Constants {
     public static final int BALL_RADIUS = 20;
     public static final int WIDTH = 800;
     public static final int HEIGHT = 600;
-    public static final int BALL_VELOCITY_FACTOR = 5000;
+    public static final int BALL_VELOCITY_FACTOR = 10000;
 }

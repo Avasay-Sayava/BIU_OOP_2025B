@@ -1,3 +1,5 @@
+// ID: 326552304
+
 package main;
 
 import biuoop.DrawSurface;
@@ -49,7 +51,8 @@ public class MultipleFramesBouncingBallsAnimation {
         Ball[] balls = new Ball[intArgs.length];
         for (int i = 0; i < intArgs.length; i++) {
             Point center = generateCenter(intArgs, rect1, rect2, i);
-            Color color = Color.getHSBColor(MathUtils.randomFloat(1), 1, 1);
+            Color color = Color.getHSBColor(MathUtils.randomFloat((float) i / intArgs.length,
+                    (float) (i + 1) / intArgs.length), 1, 1);
             balls[i] = new Ball(center, intArgs[i], color);
             double speed = BallUtils.getSpeed(intArgs[i]);
             double angle = MathUtils.randomDouble(2 * Math.PI);
@@ -113,26 +116,24 @@ public class MultipleFramesBouncingBallsAnimation {
      */
     private static Point generateCenter(int[] intArgs, Rectangle rect1, Rectangle rect2, int i) {
         if (i < intArgs.length / 2) {
-            double x = MathUtils.randomDouble(rect2.topLeft().getX() + intArgs[i],
-                    rect2.topLeft().getX() + rect2.getWidth() - intArgs[i]);
-            if (x > rect2.topLeft().getX() - intArgs[i]) {
-                double y = MathUtils.randomDouble(rect2.topLeft().getY() + intArgs[i],
-                        rect1.topLeft().getY() - intArgs[i]);
-                return new Point(x, y);
-            } else {
-                double y = MathUtils.randomDouble(rect2.topLeft().getY() + intArgs[i],
-                        rect2.topLeft().getY() + rect2.getHeight() - intArgs[i]);
-                return new Point(x, y);
+            while (true) {
+                double x = MathUtils.randomDouble(intArgs[i] + rect2.topLeft().getX(),
+                        intArgs[i] + rect2.topLeft().getX() + rect2.getWidth() - intArgs[i]);
+                double y = MathUtils.randomDouble(intArgs[i] + rect2.topLeft().getY(),
+                        intArgs[i] + rect2.topLeft().getY() + rect2.getHeight() - intArgs[i]);
+                Ball ball = new Ball(x, y, intArgs[i], null);
+                if (rect2.contains(ball) && rect1.doesntContain(ball)) {
+                    return new Point(x, y);
+                }
             }
         } else {
-            double x = MathUtils.randomDouble(rect2.topLeft().getX() + rect2.getWidth() + intArgs[i],
-                    Constants.WIDTH - intArgs[i]);
-            if (x < rect1.topLeft().getX() + rect1.getWidth() + intArgs[i]) {
-                double y = MathUtils.randomDouble(intArgs[i], rect1.topLeft().getY() - intArgs[i]);
-                return new Point(x, y);
-            } else {
+            while (true) {
+                double x = MathUtils.randomDouble(intArgs[i], Constants.WIDTH - intArgs[i]);
                 double y = MathUtils.randomDouble(intArgs[i], Constants.HEIGHT - intArgs[i]);
-                return new Point(x, y);
+                Ball ball = new Ball(x, y, intArgs[i], null);
+                if (rect2.doesntContain(ball) && rect1.doesntContain(ball)) {
+                    return new Point(x, y);
+                }
             }
         }
     }

@@ -8,7 +8,7 @@
 
     <!-- Define a property, which is like a variable for the build file, -->
     <!--  with the classpath for all compilation & execution targets. -->
-    <property name="classpath" value="bin:biuoop-1.4.jar"/>
+    <property name="classpath" value="bin"/>
 
     <!-- Compile all java files under `src`, and export .class files into `bin` -->
     <target name="compile">
@@ -21,38 +21,15 @@
     </target>
 
     <!--    This target is for your convenience; we will not grade it. -->
-    <target name="run1" depends="compile">
-        <java classname="main.BallsTest1" classpath="${classpath}" fork="true"/>
-    </target>
-
-    <target name="run2" depends="compile">
-        <java classname="main.BouncingBallAnimation" classpath="${classpath}" fork="true">
-            <arg line="${args}"/>
-        </java>
-    </target>
-
-    <target name="run3" depends="compile">
-        <java classname="main.MultipleBouncingBallsAnimation" classpath="${classpath}" fork="true">
-            <arg line="${args}"/>
-        </java>
-    </target>
-
-    <target name="run4" depends="compile">
-        <java classname="main.MultipleFramesBouncingBallsAnimation" classpath="${classpath}" fork="true">
-            <arg line="${args}"/>
-        </java>
+    <target name="run" depends="compile">
+        <java classname="ExpressionsTest" classpath="${classpath}" fork="true"/>
     </target>
 
     <!-- Run checkstyle on all our source files -->
     <target name="check">
         <java jar="checkstyle-8.44-all.jar" fork="true">
             <arg line="-c biuoop.xml"/>
-            <arg line="src/collision/*.java"/>
-            <arg line="src/geometry/*.java"/>
-            <arg line="src/graphics/*.java"/>
-            <arg line="src/main/*.java"/>
-            <arg line="src/physics/*.java"/>
-            <arg line="src/util/*.java"/>
+            <arg line="src/*.java"/>
         </java>
     </target>
 </project>

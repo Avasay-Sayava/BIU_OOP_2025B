@@ -19,6 +19,6 @@
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="library" exported="" name="biuoop-1.4" level="project" />
+    <orderEntry type="library" name="biuoop-1.4" level="project" />
   </component>
 </module>

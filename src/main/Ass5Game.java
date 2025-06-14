@@ -163,9 +163,9 @@ public class Ass5Game extends Game {
         int rows = (int) (GAME_RECT.getHeight() / Constants.BLOCK_HEIGHT);
         int cols = (int) (GAME_RECT.getWidth() / Constants.BLOCK_WIDTH);
         for (int i = 0; i < rows; i++) {
-            for (int j = 0; j < cols; j++) {
                 Color color = Color.getHSBColor(
-                        (float) MathUtils.randomDouble(j, j + 1) * rows / (rows * cols), 1, 0.9f);
+                        (float) MathUtils.randomDouble(i, i + 1)  / cols, 1, 0.9f);
+            for (int j = 0; j < cols; j++) {
                 if (i <= j && i > 6 && i < 13) {
                     Block block =
                             new Block(new Point(j * Constants.BLOCK_WIDTH,

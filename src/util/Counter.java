@@ -32,7 +32,6 @@ public class Counter {
      */
     public void decrease(int number) {
         this.value -= number;
-        System.out.println("Counter decreased by " + number + ", new value: " + this.value);
     }
 
     /**
